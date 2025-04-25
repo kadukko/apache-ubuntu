@@ -158,3 +158,41 @@ Depois, acesse no navegador:
 📡 `http://meusite.localhost`
 
 ---
+
+### ✅ 9. Resolvendo problemas
+
+
+Pode ser que o seu servidor não esteja configurado para usar **RewriteEngine** do `.htaccess`, caso isso ocorra vai aparece a mensagem:
+
+```
+Service Unavailable
+
+The server is temporarily unable to service your request due to maintenance downtime or capacity problems. 
+Please try again later.
+```
+
+Solução: 
+
+1. **Ative o módulo `mod_rewrite`**:
+   ```bash
+   sudo a2enmod rewrite
+   ```
+
+2. **Garanta que seu vhost permita o uso de `.htaccess`** com `AllowOverride All`. Seu VirtualHost deve ter algo assim:
+
+   ```apache
+   <VirtualHost *:80>
+       ServerName alertasaude.localhost
+       DocumentRoot /var/www/alertasaude
+
+       <Directory /var/www/alertasaude>
+           AllowOverride All
+           Require all granted
+       </Directory>
+   </VirtualHost>
+   ```
+
+3. **Reinicie o Apache**:
+   ```bash
+   sudo systemctl restart apache2
+   ```
